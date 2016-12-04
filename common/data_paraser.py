@@ -18,15 +18,19 @@ class VisualizeApplianceData:
         return self.get_elec_meter_data_of_a_building(building_idx)[appliance_name]
 
     def plot_appliance_data_of_a_building(self, building_idx, appliance_name):
-         activations = self.get_appliance_data_of_a_building(building_idx, appliance_name).get_activations()
+         activations = self.get_appliance_data_of_a_building(building_idx, appliance_name).power_series()
+         activations = iter(activations)
          for interval_activation in  activations:
              plt.plot(interval_activation)
              plt.show()
              plt.waitforbuttonpress()
              plt.gcf().clear()
 
+
+
     def plot_main_meter_data_of_a_building(self, building_idx):
-        activations = self.get_elec_meter_data_of_a_building(building_idx).mains().get_activations()
+        activations = self.get_elec_meter_data_of_a_building(building_idx).mains().power_series()
+        activations = iter(activations)
         for interval_activation in activations:
             plt.plot(interval_activation)
             plt.show()
