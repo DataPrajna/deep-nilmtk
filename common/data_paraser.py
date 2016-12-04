@@ -5,6 +5,8 @@ from networkx.drawing.nx_agraph import graphviz_layout
 import networkx as nx
 from nilmtk.disaggregate import CombinatorialOptimisation
 from nilmtk import HDFDataStore, MeterGroup
+import datetime
+
 
 class VisualizeApplianceData:
 
@@ -22,6 +24,10 @@ class VisualizeApplianceData:
          activations = iter(activations)
          for interval_activation in  activations:
              plt.plot(interval_activation)
+             plt.xlabel('Hour of day')
+             plt.ylabel('Kwh Consumption')
+             title = 'Consumption Data of ' + appliance_name
+             plt.title(title)
              plt.show()
              plt.waitforbuttonpress()
              plt.gcf().clear()
@@ -84,13 +90,17 @@ class VisualizeApplianceData:
         ax = plt.gca()
         return graph, ax
 
-    def pie_plot_of_submeter_energy_of_a_building(self, building_index):
+    def pie_plot_of_submeter_energy_of_a_building(self, building_index, is_save=False):
         elec = self.get_elec_meter_data_of_a_building(building_index)
         fraction = elec.submeters().fraction_per_meter().dropna()
         labels = elec.get_labels(fraction.index)
         plt.figure(figsize=(10, 10))
         fraction.plot(kind='pie', labels=labels);
         plt.show()
+        if is_save:
+            dt = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+            filename = 'pie' + dt + '.png'
+            plt.savefig(filename)
 
     def fit_a_model(self, building_idx):
         co = CombinatorialOptimisation()
