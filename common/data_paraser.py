@@ -97,6 +97,7 @@ class VisualizeApplianceData:
         fraction.plot(kind='pie', labels=labels);
         plt.show()
         #to save the file in png format
+        #to check if changes are in git
         if is_save:
             dt = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
             filename = 'pie' + dt + '.png'
