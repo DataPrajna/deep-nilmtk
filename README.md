@@ -1,2 +1,2 @@
 # deep-nilmtk
-a deep learning base load disaggregation
+a deep learning based power signature disaggregation for appliances in a household. 
