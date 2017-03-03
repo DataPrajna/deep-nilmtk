@@ -76,7 +76,6 @@ class VisualizeApplianceData:
         meter_labels = {meter: meter.instance() for meter in graph.nodes()}
         pos = graphviz_layout(graph, prog='dot')
         nx.draw(graph, pos, labels=meter_labels, arrows=False)
-
         if show_label:
             meter_labels = {meter: meter.label() for meter in graph.nodes()}
             for meter, name in meter_labels.iteritems():
@@ -97,6 +96,7 @@ class VisualizeApplianceData:
         plt.figure(figsize=(10, 10))
         fraction.plot(kind='pie', labels=labels);
         plt.show()
+        #to save the file in png format
         if is_save:
             dt = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
             filename = 'pie' + dt + '.png'

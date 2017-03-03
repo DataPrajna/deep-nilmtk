@@ -25,6 +25,7 @@ class DataServer:
         self.samples = []
         self.labels = []
 
+
         for building in range(1, 4):
             self.set_metadata(building, 5)
             all_sub_meters =  self.top_train_elec.submeters().meters
@@ -37,8 +38,9 @@ class DataServer:
                     gs.index = range(0, len(gs))
                     aligned = gs.align(x)
                     aligned = aligned[0].interpolate(method='linear')[0:400]
-                    self.labels.append(appliance_name_to_id[m.appliances[0].type['type']])
+                    self.labels.append([appliance_name_to_id[m.appliances[0].type['type']]])
                     self.samples.append(aligned.values)
+
 
         self.samples = np.asarray(self.samples)
         self.labels = np.asarray(self.labels)
@@ -51,7 +53,7 @@ class DataServer:
 
 
 if __name__== "__main__":
-    data_dir = "/home/amishra/NLDAG/data/"
+    data_dir = "/Data/"
     building_number = 3
     ds = DataServer(join(data_dir, 'redd.h5'))
     ds.set_metadata(building_number, 5)
