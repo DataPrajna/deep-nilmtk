@@ -29,7 +29,7 @@ class VisualizeApplianceData:
              plt.plot(interval_activation[0:10000])
              plt.xlabel('Hour of day')
              plt.ylabel('Kwh Consumption')
-             title = 'Consumption Data of ' + appliance_name
+             #title = 'Consumption Data of ' + appliance_name
              plt.title(title)
              plt.show()
              plt.waitforbuttonpress()
