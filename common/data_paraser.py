@@ -26,7 +26,7 @@ class VisualizeApplianceData:
          activations = iter(activations)
          print(activations)
          for interval_activation in  activations:
-             plt.plot(interval_activation[7000:8000])
+             plt.plot(interval_activation[0:10000])
              plt.xlabel('Hour of day')
              plt.ylabel('Kwh Consumption')
              title = 'Consumption Data of ' + appliance_name
