@@ -8,6 +8,8 @@ from nilmtk import HDFDataStore, MeterGroup
 import datetime
 
 
+
+
 class VisualizeApplianceData:
 
     def __init__(self, filename):
@@ -22,8 +24,9 @@ class VisualizeApplianceData:
     def plot_appliance_data_of_a_building(self, building_idx, appliance_name):
          activations = self.get_appliance_data_of_a_building(building_idx, appliance_name).power_series()
          activations = iter(activations)
+         print(activations)
          for interval_activation in  activations:
-             plt.plot(interval_activation)
+             plt.plot(interval_activation[7000:8000])
              plt.xlabel('Hour of day')
              plt.ylabel('Kwh Consumption')
              title = 'Consumption Data of ' + appliance_name
@@ -31,12 +34,14 @@ class VisualizeApplianceData:
              plt.show()
              plt.waitforbuttonpress()
              plt.gcf().clear()
+             print(interval_activation)
 
 
 
     def plot_main_meter_data_of_a_building(self, building_idx):
         activations = self.get_elec_meter_data_of_a_building(building_idx).mains().power_series()
         activations = iter(activations)
+        print(activations)
         for interval_activation in activations:
             plt.plot(interval_activation)
             plt.show()
@@ -92,10 +97,13 @@ class VisualizeApplianceData:
     def pie_plot_of_submeter_energy_of_a_building(self, building_index, is_save=False):
         elec = self.get_elec_meter_data_of_a_building(building_index)
         fraction = elec.submeters().fraction_per_meter().dropna()
+
         labels = elec.get_labels(fraction.index)
         plt.figure(figsize=(10, 10))
         fraction.plot(kind='pie', labels=labels);
         plt.show()
+        plt.waitforbuttonpress()
+
         #to save the file in png format
         #to check if changes are in git
         if is_save:
@@ -109,6 +117,7 @@ class VisualizeApplianceData:
         co.train(elec)
         return co
 
+
     def disaggregate_building_to_file(self, building_idx, filename, model=None):
         if model == None:
             model = self.fit_a_model(building_idx)
@@ -117,7 +126,18 @@ class VisualizeApplianceData:
         output = HDFDataStore(filename, 'w')
         model.disaggregate(elec.mains(), output)
         output.close()
-
+import os
+if __name__ == "__main__":
+    fname = 'C:/Users/ppdash/workspace/deep-nilmtk/Data/ukdale.h5'
+    print(os.path.isfile(fname))
+    v = VisualizeApplianceData(fname)
+    #v.get_elec_meter_data_of_a_building(1)
+    #v.get_appliance_data_of_a_building(1)
+    v.plot_appliance_data_of_a_building(1, 'washer dryer')
+    #v.pie_plot_of_submeter_energy_of_a_building(5, is_save=False)
+    #print(v.get_all_appliances_of_a_building(1))
+    # v.fit_a_model(1)
+    #v.disaggregate_building_to_file(1, 'my_model.h5')
 
 
 
